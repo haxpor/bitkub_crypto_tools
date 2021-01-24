@@ -4,9 +4,10 @@
  */
 #include <iostream>
 #include <stdlib.h>
+#include <cstring>
 
 // fee percentage (already applied percentage)
-constexpr double kFeePercentage = 0.0025;
+static constexpr double kFeePercentage = 0.0025;
 
 // accept the target buy price, and target sell price later
 // to compute the profit
@@ -17,6 +18,12 @@ int main(int argc, char* argv[])
 		std::cerr << "Usage: pcalc <amount-to-spend> <CRYPTO-buy-price> <CRYPTO-sell-price>\n";
 		return -1;
 	}	
+
+	if (std::strcmp(argv[0], "--help") == 0)
+	{
+		std::cout << "Usage: pcalc <amount-to-spend> <CRYPTO-buy-price> <CRYPTO-sell-price>\n";
+		return 0;
+	}
 
 	double amountToSpend = atof(argv[1]);
 	double CRYPTO_buyPrice = atof(argv[2]);
