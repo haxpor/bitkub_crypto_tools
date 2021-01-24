@@ -17,6 +17,7 @@ Execute `make clean` to remove all artifacts from building process.
 # TODO
 
 [x] Fix aligned number format especially in _Profit Reference Point_ section.
+[ ] Add colored text especially for loss, and profit for ease of glancing.
 
 # License
 MIT, Wasin Thonkaew
