@@ -14,5 +14,9 @@ Currently support only on Linux platform.
 Execute `make` to build the executable binary file `pcalc`.
 Execute `make clean` to remove all artifacts from building process.
 
+# TODO
+
+[x] Fix aligned number format especially in _Profit Reference Point_ section.
+
 # License
 MIT, Wasin Thonkaew
