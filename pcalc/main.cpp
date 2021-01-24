@@ -24,7 +24,7 @@ bool FoundCmdOption(int argc, char* argv[], const char* option)
 void ComputeAndPrintProfitReferencePointEntry(double percentageMargin, double cryptoSellPrice, int strFormatWidth, double grossSellPrice, double netSellPrice, double feePercentage, double amountToSpend, bool includedGrossCompute)
 {
 	double actualMultiPercentage = 1.0 + percentageMargin/100.0;
-	std::printf("Sell at %.2f%% more at  %.2f THB\n", percentageMargin/100.0f, cryptoSellPrice*actualMultiPercentage);
+	std::printf("Sell at %.2f%% more at  %.2f THB\n", percentageMargin, cryptoSellPrice*actualMultiPercentage);
 	if (includedGrossCompute)
 		std::printf("|_ Gross profit:         %*.8f     THB\n", strFormatWidth, (grossSellPrice*actualMultiPercentage)-amountToSpend);
 	std::printf("|_ Net profit:           %*.8f     THB\n\n", strFormatWidth, (netSellPrice*actualMultiPercentage)-(netSellPrice*actualMultiPercentage*feePercentage)-amountToSpend);
