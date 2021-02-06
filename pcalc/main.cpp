@@ -4,12 +4,20 @@
  */
 #include <iostream>
 #include <stdlib.h>
+#include <cstdio>
 #include <cstring>
+#include <unistd.h>
 
 // fee percentage (already applied percentage)
 static constexpr double kFeePercentage = 0.0025;
 
-bool FoundCmdOption(int argc, char* argv[], const char* option)
+inline constexpr const char* kPrefixRedTxt = "\033[1;31m";
+inline constexpr const char* kPrefixGreenTxt = "\033[1;32m";
+inline constexpr const char* kPostfixTxt = "\033[0m";
+
+static const bool g_supportTTY = isatty(STDOUT_FILENO);
+
+static bool FoundCmdOption(int argc, char* argv[], const char* option)
 {
 	for (int i=1; i<argc; ++i)
 	{
@@ -21,13 +29,31 @@ bool FoundCmdOption(int argc, char* argv[], const char* option)
 	return false;
 }
 
-void ComputeAndPrintProfitReferencePointEntry(double percentageMargin, double cryptoSellPrice, int strFormatWidth, double grossSellPrice, double netSellPrice, double feePercentage, double amountToSpend, bool includedGrossCompute)
+static void ComputeAndPrintProfitReferencePointEntry(double percentageMargin, double cryptoSellPrice, int strFormatWidth, double grossSellPrice, double netSellPrice, double feePercentage, double amountToSpend, bool includedGrossCompute)
 {
 	double actualMultiPercentage = 1.0 + percentageMargin/100.0;
 	std::printf("Sell at %.2f%% more at  %.2f THB\n", percentageMargin, cryptoSellPrice*actualMultiPercentage);
 	if (includedGrossCompute)
-		std::printf("|_ Gross profit:         %*.8f     THB\n", strFormatWidth, (grossSellPrice*actualMultiPercentage)-amountToSpend);
-	std::printf("|_ Net profit:           %*.8f     THB\n\n", strFormatWidth, (netSellPrice*actualMultiPercentage)-(netSellPrice*actualMultiPercentage*feePercentage)-amountToSpend);
+	{
+		double n = (grossSellPrice*actualMultiPercentage)-amountToSpend;
+		if (n < 0.0 && g_supportTTY)
+			std::printf("|_ Gross profit:         %s%*.8f%s     THB\n", kPrefixRedTxt, strFormatWidth, n, kPostfixTxt);
+		else if (n > 0.0 && g_supportTTY)
+			std::printf("|_ Gross profit:         %s%*.8f%s     THB\n", kPrefixGreenTxt, strFormatWidth, n, kPostfixTxt);
+		else
+			std::printf("|_ Gross profit:         %*.8f     THB\n", strFormatWidth, n);
+	}
+
+
+	{
+		double n = (netSellPrice*actualMultiPercentage)-(netSellPrice*actualMultiPercentage*feePercentage)-amountToSpend;
+		if (n < 0.0 && g_supportTTY)
+			std::printf("|_ Net profit:           %s%*.8f%s     THB\n\n", kPrefixRedTxt, strFormatWidth, n, kPostfixTxt);
+		else if (n > 0.0 && g_supportTTY)
+			std::printf("|_ Net profit:           %s%*.8f%s     THB\n\n", kPrefixGreenTxt, strFormatWidth, n, kPostfixTxt);
+		else
+			std::printf("|_ Net profit:           %*.8f     THB\n\n", strFormatWidth, n);
+	}
 }
 
 // accept the target buy price, and target sell price later
@@ -75,18 +101,35 @@ int main(int argc, char* argv[])
 	constexpr int kStrFormatWidth = 40;
 
 	std::printf("-- Summary --\n");
+
 	std::printf("Spend                    %*.8f     THB\n", kStrFormatWidth, amountToSpend);
 	std::printf(" |_ Buy CRYPTO at price  %*.8f     THB\n", kStrFormatWidth, CRYPTO_buyPrice);
 	std::printf(" |_ Sell CRYPTO at price %*.8f     THB\n\n", kStrFormatWidth, CRYPTO_sellPrice);
 
 	if (isIncludeGrossCompute)
-	std::printf("Gross profit:            %*.8f     THB\n", kStrFormatWidth, grossProfit);
-	std::printf("Profit:                  %*.8f     THB\n", kStrFormatWidth, profit);
+	{
+		if (grossProfit < 0.0 && g_supportTTY)
+			std::printf("Gross profit:            %s%*.8f%s     THB\n", kPrefixRedTxt, kStrFormatWidth, grossProfit, kPostfixTxt);
+		else if (grossProfit > 0.0 && g_supportTTY)
+			std::printf("Gross profit:            %s%*.8f%s     THB\n", kPrefixGreenTxt, kStrFormatWidth, grossProfit, kPostfixTxt);
+		else
+			std::printf("Gross profit:            %*.8f     THB\n", kStrFormatWidth, grossProfit);
+	}
+
+	{
+		if (profit < 0.0 && g_supportTTY)
+			std::printf("Profit:                  %s%*.8f%s     THB\n", kPrefixRedTxt, kStrFormatWidth, profit, kPostfixTxt);
+		else if (profit > 0.0 && g_supportTTY)
+			std::printf("Profit:                  %s%*.8f%s     THB\n", kPrefixGreenTxt, kStrFormatWidth, profit, kPostfixTxt);
+		else
+			std::printf("Profit:                  %*.8f     THB\n", kStrFormatWidth, profit);
+	}
+	
 	std::printf("Total fee:               %*.8f     THB\n", kStrFormatWidth, buyFee + sellFee);
 	std::printf(" |_ Buy fee:             %*.8f     THB\n", kStrFormatWidth, buyFee);
 	std::printf(" |_ Sell fee:            %*.8f     THB\n", kStrFormatWidth, sellFee);
 	if (isIncludeGrossCompute)
-	std::printf("Gross CRYPTO amount:     %*.8f     CRYPTO\n", kStrFormatWidth, grossAmountGainedCRYPTO);
+		std::printf("Gross CRYPTO amount:     %*.8f     CRYPTO\n", kStrFormatWidth, grossAmountGainedCRYPTO);
 	std::printf("CRYPTO amount:           %*.8f     CRYPTO\n\n", kStrFormatWidth, netAmountGainedCRYPTO);
 
 	if (isIncludeProfitReferencePoints)
