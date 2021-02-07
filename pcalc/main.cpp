@@ -91,12 +91,11 @@ int main(int argc, char* argv[])
 	double netAmountGainedCRYPTO = (amountToSpend - buyFee) / CRYPTO_buyPrice;
 
 	double grossSellPrice = grossAmountGainedCRYPTO * CRYPTO_sellPrice;
-	double netSellPrice = netAmountGainedCRYPTO * CRYPTO_sellPrice;
-	double sellFee = netSellPrice * kFeePercentage;
-	double sellPrice = netSellPrice - sellFee;
-
+	double sellFee = netAmountGainedCRYPTO * CRYPTO_sellPrice * kFeePercentage;
+	double netSellPrice = (netAmountGainedCRYPTO * CRYPTO_sellPrice) - sellFee;
+	
 	double grossProfit = grossSellPrice - amountToSpend;
-	double profit = sellPrice - amountToSpend;
+	double profit = netSellPrice - amountToSpend;
 
 	constexpr int kStrFormatWidth = 40;
 
