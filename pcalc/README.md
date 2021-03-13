@@ -137,5 +137,9 @@ Console output will highlight important numbers especially profit or loss with c
 * [x] Fix aligned number format especially in _Profit Reference Point_ section.
 * [x] Add colored text especially for loss, and profit for ease of glancing.
 
+# Notice
+
+This tool suite is created independently without warranty. As well as please be advised and do your due diligent before investing, it has risk involved. This tool doesn't involve or responsible to any of operations done on top of this tool.
+
 # License
 MIT, Wasin Thonkaew
