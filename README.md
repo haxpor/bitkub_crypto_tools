@@ -3,5 +3,7 @@
 # bitkub_crypto_tools
 Variety of Tools used to help in trading on [bitkub](https://bitkub.com/) platform.
 
+See inside each sub-directory for more information for each tool.
+
 # License
 MIT, Wasin Thonkaew
