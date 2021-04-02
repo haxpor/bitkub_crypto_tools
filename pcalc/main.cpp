@@ -91,8 +91,9 @@ int main(int argc, char* argv[])
 	double netAmountGainedCRYPTO = (amountToSpend - buyFee) / CRYPTO_buyPrice;
 
 	double grossSellPrice = grossAmountGainedCRYPTO * CRYPTO_sellPrice;
-	double sellFee = netAmountGainedCRYPTO * CRYPTO_sellPrice * kFeePercentage;
-	double netSellPrice = (netAmountGainedCRYPTO * CRYPTO_sellPrice) - sellFee;
+	// sell fee needs to be deducted from crypto amount, not total sell price
+	double sellFee_cryptoAmount = netAmountGainedCRYPTO * kFeePercentage;
+	double netSellPrice = (netAmountGainedCRYPTO - sellFee_cryptoAmount) * CRYPTO_sellPrice;
 	
 	double grossProfit = grossSellPrice - amountToSpend;
 	double profit = netSellPrice - amountToSpend;
@@ -124,9 +125,9 @@ int main(int argc, char* argv[])
 			std::printf("Profit:                  %*.8f     THB\n", kStrFormatWidth, profit);
 	}
 	
-	std::printf("Total fee:               %*.8f     THB\n", kStrFormatWidth, buyFee + sellFee);
+	std::printf("Total fee:               %*.8f     THB\n", kStrFormatWidth, buyFee + sellFee_cryptoAmount*CRYPTO_sellPrice);
 	std::printf(" |_ Buy fee:             %*.8f     THB\n", kStrFormatWidth, buyFee);
-	std::printf(" |_ Sell fee:            %*.8f     THB\n", kStrFormatWidth, sellFee);
+	std::printf(" |_ Sell fee:            %*.8f     THB\n", kStrFormatWidth, sellFee_cryptoAmount*CRYPTO_sellPrice);
 	if (isIncludeGrossCompute)
 		std::printf("Gross CRYPTO amount:     %*.8f     CRYPTO\n", kStrFormatWidth, grossAmountGainedCRYPTO);
 	std::printf("CRYPTO amount:           %*.8f     CRYPTO\n\n", kStrFormatWidth, netAmountGainedCRYPTO);
