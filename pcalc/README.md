@@ -120,7 +120,7 @@ Sell at 5.00% more at  1.5015 THB
 
 ```
 
-Ex 3. options can be combined together as well
+Ex 3. options can be combined together as well; which will show output from both flags
 
 ```
 ./pcalc 10000 1.42 1.43 --include-gross --include-prps
