@@ -29,13 +29,15 @@ static bool FoundCmdOption(int argc, char* argv[], const char* option)
 	return false;
 }
 
-static void ComputeAndPrintProfitReferencePointEntry(double percentageMargin, double cryptoSellPrice, int strFormatWidth, double grossSellPrice, double netSellPrice, double feePercentage, double amountToSpend, bool includedGrossCompute)
+static void ComputeAndPrintProfitReferencePointEntry(double percentageMargin, double cryptoSellPrice, int strFormatWidth, double grossSellPrice, double amountCRYPTO_deductedFee, double amountToSpend, bool includedGrossCompute)
 {
-	double actualMultiPercentage = 1.0 + percentageMargin/100.0;
-	std::printf("Sell at %.2f%% more at  %.4f THB\n", percentageMargin, cryptoSellPrice*actualMultiPercentage);
+	const double actualMultiPercentage = 1.0 + percentageMargin/100.0;
+	const double newCryptoSellPrice = cryptoSellPrice*actualMultiPercentage;
+
+	std::printf("Sell at %.2f%% more at  %.4f THB\n", percentageMargin, newCryptoSellPrice);
 	if (includedGrossCompute)
 	{
-		double n = (grossSellPrice*actualMultiPercentage)-amountToSpend;
+		double n = (grossSellPrice * actualMultiPercentage) - amountToSpend;
 		if (n < 0.0 && g_supportTTY)
 			std::printf("|_ Gross profit:         %s%*.8f%s     THB\n", kPrefixRedTxt, strFormatWidth, n, kPostfixTxt);
 		else if (n > 0.0 && g_supportTTY)
@@ -46,7 +48,7 @@ static void ComputeAndPrintProfitReferencePointEntry(double percentageMargin, do
 
 
 	{
-		double n = (netSellPrice*actualMultiPercentage)-(netSellPrice*actualMultiPercentage*feePercentage)-amountToSpend;
+		double n = (newCryptoSellPrice * amountCRYPTO_deductedFee) - amountToSpend;
 		if (n < 0.0 && g_supportTTY)
 			std::printf("|_ Net profit:           %s%*.8f%s     THB\n\n", kPrefixRedTxt, strFormatWidth, n, kPostfixTxt);
 		else if (n > 0.0 && g_supportTTY)
@@ -136,16 +138,17 @@ int main(int argc, char* argv[])
 	{
 		// compute further more margin of sell price for 0.1%, 0.15%, 0.2%, 0.25%, 0.5%, 1%, 1.5%, 2%, and 5%
 		std::printf("-- Profit Reference Points --\n");
-		ComputeAndPrintProfitReferencePointEntry(0.1, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
-		ComputeAndPrintProfitReferencePointEntry(0.15, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
-		ComputeAndPrintProfitReferencePointEntry(0.2, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
-		ComputeAndPrintProfitReferencePointEntry(0.25, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
-		ComputeAndPrintProfitReferencePointEntry(0.5, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
-		ComputeAndPrintProfitReferencePointEntry(1.0, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
-		ComputeAndPrintProfitReferencePointEntry(1.5, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
-		ComputeAndPrintProfitReferencePointEntry(2.0, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
-		ComputeAndPrintProfitReferencePointEntry(2.5, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
-		ComputeAndPrintProfitReferencePointEntry(5.0, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, netSellPrice, kFeePercentage, amountToSpend, isIncludeGrossCompute);
+		const double amountCRYPTO_deductedFee = netAmountGainedCRYPTO - sellFee_cryptoAmount;
+		ComputeAndPrintProfitReferencePointEntry(0.1, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
+		ComputeAndPrintProfitReferencePointEntry(0.15, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
+		ComputeAndPrintProfitReferencePointEntry(0.2, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
+		ComputeAndPrintProfitReferencePointEntry(0.25, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
+		ComputeAndPrintProfitReferencePointEntry(0.5, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
+		ComputeAndPrintProfitReferencePointEntry(1.0, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
+		ComputeAndPrintProfitReferencePointEntry(1.5, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
+		ComputeAndPrintProfitReferencePointEntry(2.0, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
+		ComputeAndPrintProfitReferencePointEntry(2.5, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
+		ComputeAndPrintProfitReferencePointEntry(5.0, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
 	}
 	return 0;
 }
