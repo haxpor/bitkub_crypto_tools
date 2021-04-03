@@ -102,42 +102,54 @@ int main(int argc, char* argv[])
 
 	constexpr int kStrFormatWidth = 40;
 
-	std::printf("-- Summary --\n");
+	std::printf("--- Summary ---\n");
 
-	std::printf("Spend                    %*.8f     THB\n", kStrFormatWidth, amountToSpend);
-	std::printf(" |_ Buy CRYPTO at price  %*.8f     THB\n", kStrFormatWidth, CRYPTO_buyPrice);
-	std::printf(" |_ Sell CRYPTO at price %*.8f     THB\n\n", kStrFormatWidth, CRYPTO_sellPrice);
+	std::printf("* Volume\n");
+	std::printf("|_ Buy volume            %*.8f     THB\n", kStrFormatWidth, amountToSpend);
+	std::printf("|_ Sell volume           %*.8f     THB\n", kStrFormatWidth, netSellPrice);
+	if (isIncludeGrossCompute)
+	{
+	std::printf("|_ Gross sell volume     %*.8f     THB\n", kStrFormatWidth, grossSellPrice);
+	}
 
+	std::printf("\n* Price\n");
+	std::printf("|_ Buy CRYPTO at price   %*.8f     THB\n", kStrFormatWidth, CRYPTO_buyPrice);
+	std::printf("|_ Sell CRYPTO at price  %*.8f     THB\n\n", kStrFormatWidth, CRYPTO_sellPrice);
+
+	std::printf("\n* Profit\n");
 	if (isIncludeGrossCompute)
 	{
 		if (grossProfit < 0.0 && g_supportTTY)
-			std::printf("Gross profit:            %s%*.8f%s     THB\n", kPrefixRedTxt, kStrFormatWidth, grossProfit, kPostfixTxt);
+			std::printf("|_ Gross profit:         %s%*.8f%s     THB\n", kPrefixRedTxt, kStrFormatWidth, grossProfit, kPostfixTxt);
 		else if (grossProfit > 0.0 && g_supportTTY)
-			std::printf("Gross profit:            %s%*.8f%s     THB\n", kPrefixGreenTxt, kStrFormatWidth, grossProfit, kPostfixTxt);
+			std::printf("|_ Gross profit:         %s%*.8f%s     THB\n", kPrefixGreenTxt, kStrFormatWidth, grossProfit, kPostfixTxt);
 		else
-			std::printf("Gross profit:            %*.8f     THB\n", kStrFormatWidth, grossProfit);
+			std::printf("|_ Gross profit:         %*.8f     THB\n", kStrFormatWidth, grossProfit);
 	}
 
 	{
 		if (profit < 0.0 && g_supportTTY)
-			std::printf("Profit:                  %s%*.8f%s     THB\n", kPrefixRedTxt, kStrFormatWidth, profit, kPostfixTxt);
+			std::printf("|_ Net profit:           %s%*.8f%s     THB\n", kPrefixRedTxt, kStrFormatWidth, profit, kPostfixTxt);
 		else if (profit > 0.0 && g_supportTTY)
-			std::printf("Profit:                  %s%*.8f%s     THB\n", kPrefixGreenTxt, kStrFormatWidth, profit, kPostfixTxt);
+			std::printf("|_ Net profit:           %s%*.8f%s     THB\n", kPrefixGreenTxt, kStrFormatWidth, profit, kPostfixTxt);
 		else
-			std::printf("Profit:                  %*.8f     THB\n", kStrFormatWidth, profit);
+			std::printf("|_ Net profit:           %*.8f     THB\n", kStrFormatWidth, profit);
 	}
 	
-	std::printf("Total fee:               %*.8f     THB\n", kStrFormatWidth, buyFee + sellFee_cryptoAmount*CRYPTO_sellPrice);
-	std::printf(" |_ Buy fee:             %*.8f     THB\n", kStrFormatWidth, buyFee);
-	std::printf(" |_ Sell fee:            %*.8f     THB\n", kStrFormatWidth, sellFee_cryptoAmount*CRYPTO_sellPrice);
+	std::printf("\n* Fee\n");
+	std::printf("|_ Total fee:            %*.8f     THB\n", kStrFormatWidth, buyFee + sellFee_cryptoAmount*CRYPTO_sellPrice);
+	std::printf("   |_ Buy fee:           %*.8f     THB\n", kStrFormatWidth, buyFee);
+	std::printf("   |_ Sell fee:          %*.8f     THB\n", kStrFormatWidth, sellFee_cryptoAmount*CRYPTO_sellPrice);
+
+	std::printf("\n* Amount\n");
 	if (isIncludeGrossCompute)
-		std::printf("Gross CRYPTO amount:     %*.8f     CRYPTO\n", kStrFormatWidth, grossAmountGainedCRYPTO);
-	std::printf("CRYPTO amount:           %*.8f     CRYPTO\n\n", kStrFormatWidth, netAmountGainedCRYPTO);
+	std::printf("|_ Gross CRYPTO amount:  %*.8f     CRYPTO\n", kStrFormatWidth, grossAmountGainedCRYPTO);
+	std::printf("|_ CRYPTO amount:        %*.8f     CRYPTO\n\n", kStrFormatWidth, netAmountGainedCRYPTO);
 
 	if (isIncludeProfitReferencePoints)
 	{
 		// compute further more margin of sell price for 0.1%, 0.15%, 0.2%, 0.25%, 0.5%, 1%, 1.5%, 2%, and 5%
-		std::printf("-- Profit Reference Points --\n");
+		std::printf("--- Profit Reference Points ---\n");
 		const double amountCRYPTO_deductedFee = netAmountGainedCRYPTO - sellFee_cryptoAmount;
 		ComputeAndPrintProfitReferencePointEntry(0.1, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
 		ComputeAndPrintProfitReferencePointEntry(0.15, CRYPTO_sellPrice, kStrFormatWidth, grossSellPrice, amountCRYPTO_deductedFee, amountToSpend, isIncludeGrossCompute);
