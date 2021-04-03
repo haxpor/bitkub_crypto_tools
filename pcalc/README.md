@@ -24,25 +24,30 @@ Usage: pcalc <amount-to-spend> <CRYPTO-buy-price> <CRYPTO-sell-price>
 
 ## Default
 
-For normal circumstance, by default we just execute the following command
+For normal circumstance, by default we just execute the following command with result as shown
 
 ```
-./pcalc 89000 1763500 1777500
-```
+$ ./pcalc 89000 1763500 1777500
+--- Summary ---
+* Volume
+|_ Buy volume                                      89000.00000000     THB
+|_ Sell volume                                     89258.57739403     THB
 
-the result will be
+* Price
+|_ Buy CRYPTO at price                           1763500.00000000     THB
+|_ Sell CRYPTO at price                          1777500.00000000     THB
 
-```
--- Summary --
-Spend                                              89000.00000000     THB
- |_ Buy CRYPTO at price                          1763500.00000000     THB
- |_ Sell CRYPTO at price                         1777500.00000000     THB
 
-Profit:                                              258.57739403     THB
-Total fee:                                           446.20570775     THB
- |_ Buy fee:                                         222.50000000     THB
- |_ Sell fee:                                        223.70570775     THB
-CRYPTO amount:                                         0.05034165     CRYPTO
+* Profit
+|_ Net profit:                                       258.57739403     THB
+
+* Fee
+|_ Total fee:                                        446.20570775     THB
+   |_ Buy fee:                                       222.50000000     THB
+   |_ Sell fee:                                      223.70570775     THB
+
+* Amount
+|_ CRYPTO amount:                                      0.05034165     CRYPTO
 
 ```
 
@@ -57,66 +62,87 @@ Ex 1.
 
 ```
 $ ./pcalc 10000 1.42 1.43 --include-gross
--- Summary --
-Spend                                              10000.00000000     THB
- |_ Buy CRYPTO at price                                1.42000000     THB
- |_ Sell CRYPTO at price                               1.43000000     THB
+--- Summary ---
+* Volume
+|_ Buy volume                                      10000.00000000     THB
+|_ Sell volume                                     10020.13336268     THB
+|_ Gross sell volume                               10070.42253521     THB
 
-Gross profit:                                         70.42253521     THB
-Profit:                                               20.13336268     THB
-Total fee:                                            50.11311620     THB
- |_ Buy fee:                                          25.00000000     THB
- |_ Sell fee:                                         25.11311620     THB
-Gross CRYPTO amount:                                7042.25352113     CRYPTO
-CRYPTO amount:                                      7024.64788732     CRYPTO
+* Price
+|_ Buy CRYPTO at price                                 1.42000000     THB
+|_ Sell CRYPTO at price                                1.43000000     THB
+
+
+* Profit
+|_ Gross profit:                                      70.42253521     THB
+|_ Net profit:                                        20.13336268     THB
+
+* Fee
+|_ Total fee:                                         50.11311620     THB
+   |_ Buy fee:                                        25.00000000     THB
+   |_ Sell fee:                                       25.11311620     THB
+
+* Amount
+|_ Gross CRYPTO amount:                             7042.25352113     CRYPTO
+|_ CRYPTO amount:                                   7024.64788732     CRYPTO
 
 ```
 
 Ex 2.
 
 ```
-./pcalc 10000 1.42 1.43 --include-prps
--- Summary --
-Spend                                              10000.00000000     THB
- |_ Buy CRYPTO at price                                1.42000000     THB
- |_ Sell CRYPTO at price                               1.43000000     THB
+$ ./pcalc 10000 1.42 1.43 --include-prps
+--- Summary ---
+* Volume
+|_ Buy volume                                      10000.00000000     THB
+|_ Sell volume                                     10020.13336268     THB
 
-Profit:                                               20.13336268     THB
-Total fee:                                            50.11311620     THB
- |_ Buy fee:                                          25.00000000     THB
- |_ Sell fee:                                         25.11311620     THB
-CRYPTO amount:                                      7024.64788732     CRYPTO
+* Price
+|_ Buy CRYPTO at price                                 1.42000000     THB
+|_ Sell CRYPTO at price                                1.43000000     THB
 
--- Profit Reference Points --
+
+* Profit
+|_ Net profit:                                        20.13336268     THB
+
+* Fee
+|_ Total fee:                                         50.11311620     THB
+   |_ Buy fee:                                        25.00000000     THB
+   |_ Sell fee:                                       25.11311620     THB
+
+* Amount
+|_ CRYPTO amount:                                   7024.64788732     CRYPTO
+
+--- Profit Reference Points ---
 Sell at 0.10% more at  1.4314 THB
-|_ Net profit:                                         5.07811230     THB
+|_ Net profit:                                        30.15349604     THB
 
 Sell at 0.15% more at  1.4321 THB
-|_ Net profit:                                        10.07565381     THB
+|_ Net profit:                                        35.16356272     THB
 
 Sell at 0.20% more at  1.4329 THB
-|_ Net profit:                                        15.07319533     THB
+|_ Net profit:                                        40.17362940     THB
 
 Sell at 0.25% more at  1.4336 THB
-|_ Net profit:                                        20.07073684     THB
+|_ Net profit:                                        45.18369608     THB
 
 Sell at 0.50% more at  1.4371 THB
-|_ Net profit:                                        45.05844442     THB
+|_ Net profit:                                        70.23402949     THB
 
 Sell at 1.00% more at  1.4443 THB
-|_ Net profit:                                        95.03385956     THB
+|_ Net profit:                                       120.33469630     THB
 
 Sell at 1.50% more at  1.4514 THB
-|_ Net profit:                                       145.00927471     THB
+|_ Net profit:                                       170.43536312     THB
 
 Sell at 2.00% more at  1.4586 THB
-|_ Net profit:                                       194.98468985     THB
+|_ Net profit:                                       220.53602993     THB
 
 Sell at 2.50% more at  1.4657 THB
-|_ Net profit:                                       244.96010500     THB
+|_ Net profit:                                       270.63669674     THB
 
 Sell at 5.00% more at  1.5015 THB
-|_ Net profit:                                       494.83718073     THB
+|_ Net profit:                                       521.14003081     THB
 
 ```
 
