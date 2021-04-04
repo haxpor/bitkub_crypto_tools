@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
 	std::printf("|_ Buy CRYPTO at price   %*.8f     THB\n", kStrFormatWidth, CRYPTO_buyPrice);
 	std::printf("|_ Sell CRYPTO at price  %*.8f     THB\n\n", kStrFormatWidth, CRYPTO_sellPrice);
 
-	std::printf("\n* Profit\n");
+	std::printf("* Profit\n");
 	if (isIncludeGrossCompute)
 	{
 		if (grossProfit < 0.0 && g_supportTTY)
