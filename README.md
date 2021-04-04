@@ -7,7 +7,7 @@ See inside each sub-directory for more information for each tool.
 
 # Notice
 
-This tool suite is created independently without warranty. As well as please be advised and do your due diligent before investing, it has risk involved. This tool doesn't involve or responsible to any of operations done on top of this tool.
+**This tool suite is created independently without warranty. As well as please be advised and do your due diligent before investing, it has risk involved. Author and contributors altogether are not responsible to any results done from using the tools.**
 
 # License
 MIT, Wasin Thonkaew
