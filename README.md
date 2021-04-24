@@ -3,7 +3,14 @@
 # bitkub_crypto_tools
 Variety of Tools used to help in trading on [bitkub](https://bitkub.com/) platform.
 
-See inside each sub-directory for more information for each tool.
+Each sub-tool under this realm lives in separate git repository but included as
+a git submodule.
+
+# List of sub-tools
+
+* [pcalc](https://github.com/haxpor/bitkub_pcalc)
+* [overlay](https://github.com/haxpor/bitkub_overlay) - WIP
+* [notifier](https://github.com/haxpor/bitkub_notifier) - WIP
 
 # Notice
 
