@@ -8,6 +8,7 @@ a git submodule.
 
 # List of sub-tools
 
+* [commonlib](https://github.com/haxpor/bitkub_commonlib) (core reusable library)
 * [pcalc](https://github.com/haxpor/bitkub_pcalc)
 * [overlay](https://github.com/haxpor/bitkub_overlay) - WIP
 * [notifier](https://github.com/haxpor/bitkub_notifier) - WIP
